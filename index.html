@@ -101,16 +101,40 @@ nav.menu a:hover::after{transform:scaleX(1);transform-origin:left}
 @keyframes fadeUp{to{opacity:1;transform:none}}
 .hero-visual{position:relative;justify-self:center;width:100%;max-width:560px}
 .hero-photo{position:relative;border-radius:280px 280px 32px 32px;overflow:hidden;aspect-ratio:4/5;box-shadow:0 40px 80px -30px rgba(0,0,0,.6);animation:fadeUp 1.2s .3s var(--ease) both}
-.hero-photo img{width:100%;height:100%;object-fit:cover;object-position:40% center;transform:scale(1.12);animation:zoomOut 2.2s .3s var(--ease) forwards}
+.hero-photo .slide{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transform:scale(1.15);transition:opacity 1.2s var(--ease)}
+.hero-photo .slide.on{opacity:1;animation:kenburns 7s linear forwards}
+@keyframes kenburns{from{transform:scale(1.15)}to{transform:scale(1.02)}}
+.hero-photo::after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(31,29,27,.55),transparent 40%);pointer-events:none}
+.hero-caption{position:absolute;top:13%;left:50%;transform:translateX(-50%);white-space:nowrap;z-index:3;display:flex;align-items:center;gap:12px;background:rgba(31,29,27,.55);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.18);border-radius:999px;padding:8px 16px 8px 8px;font-size:.82rem;font-weight:500}
+.hero-caption .num{background:var(--orange);border-radius:999px;padding:4px 10px;font-weight:700;font-size:.75rem;letter-spacing:.05em}
+.hero-caption span{transition:opacity .4s}
+.hero-dots{position:absolute;left:50%;bottom:22px;transform:translateX(-50%);display:flex;gap:8px;z-index:3}
+.hero-dots button{width:28px;height:4px;border-radius:4px;border:0;background:rgba(255,255,255,.4);cursor:pointer;overflow:hidden;position:relative;padding:0}
+.hero-dots button i{position:absolute;inset:0;background:#fff;transform:scaleX(0);transform-origin:left}
+.hero-dots button.on i{animation:fill 6s linear forwards}
+@keyframes fill{to{transform:scaleX(1)}}
+
+/* Carte produit en diaporama */
+.slide-card{position:absolute;left:-56px;bottom:9%;z-index:4;width:320px;background:#fff;color:var(--ink);border-radius:22px;box-shadow:0 30px 60px -24px rgba(0,0,0,.55);overflow:hidden;animation:float 6s ease-in-out infinite}
+.slide-card .viewport{overflow:hidden}
+.slide-card .rail{display:flex;transition:transform .7s var(--ease)}
+.slide-card .item{flex:0 0 100%;display:flex;gap:14px;align-items:center;padding:14px 16px 14px 14px}
+.slide-card .thumb{flex:none;width:96px;height:72px;border-radius:14px;background:var(--cream);display:grid;place-items:center;overflow:hidden}
+.slide-card .thumb img{width:88%;height:88%;object-fit:contain;mix-blend-mode:multiply}
+.slide-card .kind{display:block;font-size:.66rem;letter-spacing:.14em;text-transform:uppercase;color:var(--orange-dark);font-weight:700}
+.slide-card .nm{display:block;font-family:var(--serif);font-size:1.4rem;font-weight:600;line-height:1.1}
+.slide-card .lnk{font-size:.8rem;font-weight:600;color:var(--muted);transition:color .3s}
+.slide-card .lnk:hover{color:var(--orange)}
+.slide-card .bar{display:flex;align-items:center;gap:10px;padding:0 14px 12px}
+.slide-card .track{flex:1;height:3px;background:var(--line);border-radius:3px;overflow:hidden}
+.slide-card .track i{display:block;height:100%;width:0;background:var(--orange)}
+.slide-card .track i.run{animation:grow 4s linear forwards}
+@keyframes grow{to{width:100%}}
+.slide-card .arr{width:28px;height:28px;border-radius:50%;border:1px solid var(--line);background:#fff;cursor:pointer;display:grid;place-items:center;color:var(--ink);transition:.3s}
+.slide-card .arr:hover{background:var(--ink);color:#fff;border-color:var(--ink)}
 @keyframes zoomOut{to{transform:scale(1)}}
 .ring{position:absolute;inset:-26px;border:1.5px dashed rgba(245,130,10,.55);border-radius:300px 300px 48px 48px;animation:spinDash 40s linear infinite;pointer-events:none}
 @keyframes spinDash{to{stroke-dashoffset:0;filter:hue-rotate(0)}}
-.float-card{position:absolute;background:#fff;color:var(--ink);border-radius:18px;padding:14px 18px;display:flex;gap:12px;align-items:center;box-shadow:0 24px 50px -20px rgba(0,0,0,.45);font-size:.85rem;animation:float 5s ease-in-out infinite}
-.float-card .ic{width:40px;height:40px;border-radius:12px;background:var(--orange-soft);color:var(--orange);display:grid;place-items:center;flex:none}
-.float-card b{display:block;font-size:.92rem}
-.float-card small{color:var(--muted)}
-.fc1{left:-46px;top:22%}
-.fc2{right:-30px;bottom:14%;animation-delay:-2.5s}
 @keyframes float{50%{transform:translateY(-14px)}}
 .scroll-hint{position:absolute;left:50%;bottom:22px;transform:translateX(-50%);width:26px;height:42px;border:1.5px solid rgba(255,255,255,.4);border-radius:20px}
 .scroll-hint::after{content:"";position:absolute;left:50%;top:8px;width:4px;height:8px;border-radius:2px;background:var(--orange);transform:translateX(-50%);animation:wheel 1.8s infinite}
@@ -284,8 +308,10 @@ footer ul a:hover{color:var(--orange);padding-left:6px}
   .brand img{width:44px;height:44px}
   .brand .name{font-size:1.2rem}
   .head-cta .icon-btn.mail{display:none}
-  .fc1{left:-8px}.fc2{right:-8px}
-  .float-card{padding:10px 12px;font-size:.78rem}
+  .slide-card{left:50%;bottom:-40px;width:calc(100% - 24px);max-width:340px;transform:translateX(-50%);animation:none}
+  .hero .wrap{padding-bottom:110px}
+  .hero-caption{font-size:.75rem}
+  .hero-dots{bottom:60px}
   .hero .badges{gap:18px}
   .marquee .track{font-size:1.5rem}
   .section{padding:76px 0}
@@ -374,9 +400,21 @@ footer ul a:hover{color:var(--orange);padding-left:6px}
       </div>
       <div class="hero-visual">
         <div class="ring"></div>
-        <div class="hero-photo"><img src="img/opticien.webp" alt="Opticien présentant une monture écaille en magasin"></div>
-        <div class="float-card fc1"><span class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/></svg></span><div><b>Examen de vue</b><small>En magasin</small></div></div>
-        <div class="float-card fc2"><span class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/></svg></span><div><b>Commande rapide</b><small>07 59 54 95 94</small></div></div>
+        <div class="hero-photo" id="heroSlides">
+          <img class="slide on" src="img/portrait.png" alt="Homme ajustant ses lunettes à monture noire" data-cap="Le style qui vous ressemble" style="object-position:35% center">
+          <img class="slide" src="img/collection.png" alt="Sélection de montures écaille, noires, vertes et métal" data-cap="La nouvelle collection">
+          <img class="slide" src="img/examen.png" alt="Lunettes devant un tableau de lecture" data-cap="Une vision nette">
+          <div class="hero-caption"><b class="num" id="capNum">01</b><span id="capTxt">Le style qui vous ressemble</span></div>
+          <div class="hero-dots" id="heroDots"></div>
+        </div>
+        <div class="slide-card" id="slideCard">
+          <div class="viewport"><div class="rail" id="rail"></div></div>
+          <div class="bar">
+            <button class="arr" data-dir="-1" aria-label="Précédent"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 6l-6 6 6 6"/></svg></button>
+            <span class="track"><i id="railProg"></i></span>
+            <button class="arr" data-dir="1" aria-label="Suivant"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 6l6 6-6 6"/></svg></button>
+          </div>
+        </div>
       </div>
     </div>
     <div class="scroll-hint" aria-hidden="true"></div>
@@ -448,7 +486,7 @@ footer ul a:hover{color:var(--orange);padding-left:6px}
   <section class="section steps-sec">
     <div class="wrap split">
       <div class="portrait reveal">
-        <img src="img/portrait.png" alt="Homme ajustant ses lunettes à monture noire">
+        <img src="img/opticien.webp" alt="Opticien présentant une monture écaille en magasin" style="object-position:40% center">
         <div class="quote">« Les bonnes lunettes, c'est celles qu'on oublie qu'on porte. »<small>L'équipe Acuitix Optic</small></div>
       </div>
       <div class="reveal" data-d="1">
@@ -581,6 +619,38 @@ $("#products").innerHTML = products.map((p, i) => `
       </div>
     </div>
   </article>`).join("");
+
+// Diaporama du héros
+const slides = $$("#heroSlides .slide");
+let hs = 0;
+$("#heroDots").innerHTML = [...slides].map((_, i) => `<button aria-label="Image ${i + 1}"${i ? "" : ' class="on"'}><i></i></button>`).join("");
+const dots = $$("#heroDots button");
+const showHero = i => {
+  hs = (i + slides.length) % slides.length;
+  slides.forEach((s, k) => s.classList.toggle("on", k === hs));
+  dots.forEach((d, k) => { d.classList.remove("on"); void d.offsetWidth; d.classList.toggle("on", k === hs); });
+  $("#capNum").textContent = String(hs + 1).padStart(2, "0");
+  $("#capTxt").textContent = slides[hs].dataset.cap;
+};
+let heroTimer = setInterval(() => showHero(hs + 1), 6000);
+dots.forEach((d, i) => d.onclick = () => { clearInterval(heroTimer); showHero(i); heroTimer = setInterval(() => showHero(hs + 1), 6000); });
+
+// Carte produits en diaporama
+const picks = products.filter(p => !p.cover);
+$("#rail").innerHTML = picks.map(p => `
+  <div class="item">
+    <span class="thumb"><img src="${p.img}" alt="${p.kind} ${p.n}"></span>
+    <span><span class="kind">${p.kind}</span><span class="nm">${p.n}</span><a class="lnk" href="#commander" data-model="${p.n}">Commander ce modèle →</a></span>
+  </div>`).join("");
+let ps = 0, railTimer;
+const showPick = i => {
+  ps = (i + picks.length) % picks.length;
+  $("#rail").style.transform = `translateX(-${ps * 100}%)`;
+  const bar = $("#railProg"); bar.classList.remove("run"); void bar.offsetWidth; bar.classList.add("run");
+  clearTimeout(railTimer); railTimer = setTimeout(() => showPick(ps + 1), 4000);
+};
+$$("#slideCard .arr").forEach(b => b.onclick = () => showPick(ps + +b.dataset.dir));
+showPick(0);
 
 // Filtres
 $$(".filters button").forEach(b => b.onclick = () => {
