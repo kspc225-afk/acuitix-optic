@@ -243,11 +243,13 @@ nav.menu a:hover::after{transform:scaleX(1);transform-origin:left}
 .portrait .quote{position:absolute;left:20px;right:20px;bottom:20px;background:rgba(31,29,27,.72);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-radius:18px;padding:20px 22px;font-family:var(--display);font-size:1.15rem;font-weight:500;letter-spacing:-.01em;line-height:1.35}
 .portrait .quote small{display:block;font-family:var(--sans);font-style:normal;font-size:.78rem;color:var(--orange);margin-top:8px;font-weight:600;letter-spacing:.08em;text-transform:uppercase}
 .steps-sec p.lead{color:#cfc8be;margin-bottom:34px}
-.steps{display:grid;gap:16px;counter-reset:s}
-.step{display:flex;gap:20px;align-items:flex-start;padding:22px 24px;border-radius:20px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);transition:.4s var(--ease)}
-.step:hover{background:rgba(245,130,10,.12);border-color:rgba(245,130,10,.5);translate:8px 0}
-.step{transition:background .4s var(--ease),border-color .4s var(--ease),translate .4s var(--ease)}
-.step::before{counter-increment:s;content:"0" counter(s);font-family:var(--display);font-size:1.9rem;font-weight:700;letter-spacing:-.03em;color:var(--orange);line-height:1}
+/* Frise : pastilles numérotées à gauche, reliées par une ligne, cartes à droite */
+.steps{display:grid;gap:16px;counter-reset:s;position:relative;padding-left:68px}
+.step{position:relative;padding:22px 24px;border-radius:20px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);transition:background .4s var(--ease),border-color .4s var(--ease),translate .4s var(--ease)}
+.step:hover{background:rgba(245,130,10,.12);border-color:rgba(245,130,10,.5);translate:6px 0}
+.step::before{counter-increment:s;content:"0" counter(s);position:absolute;left:-68px;top:50%;margin-top:-24px;width:48px;height:48px;border-radius:50%;display:grid;place-items:center;background:var(--charcoal);border:2px solid var(--orange);color:var(--orange);font-family:var(--display);font-size:.95rem;font-weight:700;letter-spacing:-.01em;line-height:1;z-index:1;transition:background .4s var(--ease),color .4s var(--ease),transform .4s var(--ease)}
+.step:hover::before{background:var(--orange);color:#fff;transform:scale(1.08)}
+.step::after{content:"";position:absolute;left:-20px;top:50%;width:20px;height:2px;background:rgba(245,130,10,.5)}
 .step b{display:block;font-size:1.05rem;margin-bottom:4px}
 .step span{color:#bdb6ac;font-size:.92rem}
 
@@ -346,8 +348,7 @@ footer ul a:hover{color:var(--orange);padding-left:6px}
 .card:hover .img::after{transform:translateX(120%)}
 
 /* Étapes qui s'allument l'une après l'autre */
-.steps{position:relative}
-.steps::before{content:"";position:absolute;left:38px;top:24px;bottom:24px;width:2px;background:linear-gradient(var(--orange),transparent);transform:scaleY(0);transform-origin:top;transition:transform 1.6s var(--ease) .3s}
+.steps::before{content:"";position:absolute;left:23px;top:48px;bottom:48px;width:2px;background:linear-gradient(var(--orange),rgba(245,130,10,.25));transform:scaleY(0);transform-origin:top;transition:transform 1.6s var(--ease) .3s}
 .reveal.in .steps::before{transform:scaleY(1)}
 .step{opacity:0;transform:translateX(40px)}
 .reveal.in .step{animation:stepIn .9s var(--ease) forwards}
