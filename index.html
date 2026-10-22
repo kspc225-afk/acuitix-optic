@@ -195,7 +195,7 @@ nav.menu a:hover::after{transform:scaleX(1);transform-origin:left}
 .photo-stack .main-img{border-radius:var(--radius);overflow:hidden;aspect-ratio:3/2;box-shadow:0 40px 70px -40px rgba(0,0,0,.45)}
 .photo-stack .main-img img{width:100%;height:115%;object-fit:cover;will-change:transform}
 .photo-stack .stamp{position:absolute;right:-28px;top:-34px;width:130px;height:130px;animation:spin 18s linear infinite}
-.photo-stack .stamp text{font:600 11.5px var(--sans);letter-spacing:3.4px;fill:var(--charcoal)}
+.photo-stack .stamp text{font:600 10.5px var(--sans);letter-spacing:1px;fill:var(--charcoal)}
 @keyframes spin{to{transform:rotate(360deg)}}
 .photo-stack .tag{position:absolute;left:-22px;bottom:30px;background:var(--orange);color:#fff;padding:14px 20px;border-radius:16px;font-weight:600;box-shadow:0 20px 40px -18px rgba(245,130,10,.8);animation:float 6s ease-in-out infinite}
 .split p{color:var(--muted);margin-bottom:22px}
@@ -359,7 +359,7 @@ footer ul a:hover{color:var(--orange);padding-left:6px}
   .marquee .track{font-size:1.5rem}
   .section{padding:76px 0}
   .perks,.products,.row,.foot-grid{grid-template-columns:1fr}
-  .photo-stack .stamp{width:96px;height:96px;right:-6px;top:-30px}
+  .photo-stack .stamp{width:96px;height:96px;right:8px;top:-30px}
   .photo-stack .tag{left:10px}
   form.order-form{padding:24px 18px}
   .ring{inset:-12px}
@@ -501,7 +501,7 @@ footer ul a:hover{color:var(--orange);padding-left:6px}
         <svg class="stamp" viewBox="0 0 120 120" aria-hidden="true">
           <defs><path id="circ" d="M60 60m-46 0a46 46 0 1 1 92 0a46 46 0 1 1-92 0"/></defs>
           <circle cx="60" cy="60" r="58" fill="#fff"/>
-          <text><textPath href="#circ">ACUITIX OPTIC • AU-DELÀ DE LA VUE •</textPath></text>
+          <text><textPath href="#circ" textLength="286" lengthAdjust="spacing">ACUITIX OPTIC • AU-DELÀ DE LA VUE •</textPath></text>
           <circle cx="60" cy="60" r="16" fill="#f5820a"/>
         </svg>
         <div class="tag">Nouvelle collection ✦</div>
