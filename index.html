@@ -247,7 +247,8 @@ nav.menu a:hover::after{transform:scaleX(1);transform-origin:left}
 .steps-sec p.lead{color:#cfc8be;margin-bottom:34px}
 .steps{display:grid;gap:16px;counter-reset:s}
 .step{display:flex;gap:20px;align-items:flex-start;padding:22px 24px;border-radius:20px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);transition:.4s var(--ease)}
-.step:hover{background:rgba(245,130,10,.12);border-color:rgba(245,130,10,.5);transform:translateX(8px)}
+.step:hover{background:rgba(245,130,10,.12);border-color:rgba(245,130,10,.5);translate:8px 0}
+.step{transition:background .4s var(--ease),border-color .4s var(--ease),translate .4s var(--ease)}
 .step::before{counter-increment:s;content:"0" counter(s);font-family:var(--serif);font-size:2.2rem;font-weight:600;color:var(--orange);line-height:1}
 .step b{display:block;font-size:1.05rem;margin-bottom:4px}
 .step span{color:#bdb6ac;font-size:.92rem}
@@ -328,6 +329,61 @@ footer ul a:hover{color:var(--orange);padding-left:6px}
 .toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(140px);background:var(--ink);color:#fff;padding:14px 24px;border-radius:999px;font-weight:500;transition:.5s var(--ease);z-index:150;display:flex;gap:10px;align-items:center}
 .toast.show{transform:translateX(-50%) translateY(0)}
 
+/* ===== Mouvement ===== */
+/* Titres qui montent mot par mot */
+.w{display:inline-block;overflow:hidden;vertical-align:bottom;padding-bottom:.1em;margin-bottom:-.1em}
+.w>span{display:inline-block;transform:translateY(110%) rotate(4deg);transition:transform 1s var(--ease) calc(var(--i) * 55ms + .1s)}
+.reveal.in .w>span{transform:none}
+
+/* Rideau orange sur les photos */
+.curtain{position:relative;overflow:hidden}
+.curtain::before{content:"";position:absolute;inset:0;z-index:6;background:var(--orange);transform-origin:right;transition:transform 1.2s var(--ease) .2s;pointer-events:none}
+.in .curtain::before,.curtain.in::before{transform:scaleX(0)}
+.curtain.zoom img{transform:scale(1.3);transition:transform 1.8s var(--ease) .2s}
+.curtain.zoom.in img{transform:scale(1)}
+.curtain.zoom.in:hover img{transform:scale(1.05)}
+
+/* Reflet sur les cartes produits */
+.card .img::after{content:"";position:absolute;inset:0;background:linear-gradient(115deg,transparent 35%,rgba(255,255,255,.75) 50%,transparent 65%);transform:translateX(-120%);transition:transform .9s var(--ease);pointer-events:none}
+.card:hover .img::after{transform:translateX(120%)}
+
+/* Étapes qui s'allument l'une après l'autre */
+.steps{position:relative}
+.steps::before{content:"";position:absolute;left:38px;top:24px;bottom:24px;width:2px;background:linear-gradient(var(--orange),transparent);transform:scaleY(0);transform-origin:top;transition:transform 1.6s var(--ease) .3s}
+.reveal.in .steps::before{transform:scaleY(1)}
+.step{opacity:0;transform:translateX(40px)}
+.reveal.in .step{animation:stepIn .9s var(--ease) forwards}
+.reveal.in .step:nth-child(2){animation-delay:.25s}
+.reveal.in .step:nth-child(3){animation-delay:.5s}
+@keyframes stepIn{to{opacity:1;transform:none}}
+
+/* Lunettes qui se dessinent */
+.draw circle,.draw path{stroke-dasharray:700;stroke-dashoffset:700;transition:stroke-dashoffset 2.6s var(--ease)}
+.draw path{transition-delay:.6s}
+.draw.in circle,.draw.in path{stroke-dashoffset:0}
+.order .glasses-bg{animation:float 8s ease-in-out infinite}
+
+/* Grand texte du pied de page qui se remplit */
+.foot-big{background:linear-gradient(90deg,#3d3a36 var(--p,0%),transparent var(--p,0%));-webkit-background-clip:text;background-clip:text}
+
+/* Suivi de la souris dans le haut de page */
+.hero .blob{translate:calc(var(--mx,0) * 50px) calc(var(--my,0) * 40px);transition:translate .8s var(--ease)}
+.hero-photo{translate:calc(var(--mx,0) * -14px) calc(var(--my,0) * -10px);transition:translate .6s var(--ease)}
+.hero .ring{translate:calc(var(--mx,0) * 10px) calc(var(--my,0) * 8px);transition:translate .7s var(--ease)}
+.hero .slide-card{translate:calc(var(--mx,0) * 26px) calc(var(--my,0) * 18px);transition:translate .5s var(--ease)}
+.btn{transition:transform .3s var(--ease),box-shadow .3s,translate .35s var(--ease)}
+
+/* Curseur */
+#cursor{position:fixed;left:0;top:0;width:38px;height:38px;margin:-19px 0 0 -19px;border:1.5px solid var(--orange);border-radius:50%;pointer-events:none;z-index:300;opacity:0;transition:width .3s var(--ease),height .3s var(--ease),margin .3s var(--ease),background .3s,opacity .3s}
+#cursor.on{opacity:1}
+#cursor.big{width:70px;height:70px;margin:-35px 0 0 -35px;background:rgba(245,130,10,.12)}
+#cursorDot{position:fixed;left:0;top:0;width:6px;height:6px;margin:-3px 0 0 -3px;border-radius:50%;background:var(--orange);pointer-events:none;z-index:301;opacity:0}
+#cursorDot.on{opacity:1}
+
+/* Bandeau qui réagit au défilement */
+.marquee .track.js{animation:none}
+.marquee{transition:transform .4s var(--ease)}
+
 @media (max-width:1100px){
   nav.menu,.head-cta .btn{display:none}
   .head-cta{margin-left:auto}
@@ -373,10 +429,6 @@ footer ul a:hover{color:var(--orange);padding-left:6px}
   .mobile-bar .call{background:var(--ink)}
   .mobile-bar .whats{background:var(--wa)}
   .mobile-bar .cmd{background:var(--orange)}
-}
-@media (prefers-reduced-motion:reduce){
-  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
-  .reveal{opacity:1;transform:none}
 }
 </style>
 </head>
@@ -497,7 +549,7 @@ footer ul a:hover{color:var(--orange);padding-left:6px}
   <section class="section" id="collection" style="padding-top:0">
     <div class="wrap split">
       <div class="photo-stack reveal">
-        <div class="main-img"><img src="img/collection.png" alt="Sélection de montures écaille, noires, vertes et métal" data-parallax></div>
+        <div class="main-img curtain"><img src="img/collection.png" alt="Sélection de montures écaille, noires, vertes et métal" data-parallax></div>
         <svg class="stamp" viewBox="0 0 120 120" aria-hidden="true">
           <defs><path id="circ" d="M60 60m-46 0a46 46 0 1 1 92 0a46 46 0 1 1-92 0"/></defs>
           <circle cx="60" cy="60" r="58" fill="#fff"/>
@@ -537,7 +589,7 @@ footer ul a:hover{color:var(--orange);padding-left:6px}
 
   <section class="section steps-sec">
     <div class="wrap split">
-      <div class="portrait reveal">
+      <div class="portrait curtain zoom reveal">
         <img src="img/opticien.webp" alt="Opticien présentant une monture écaille en magasin" style="object-position:40% center">
         <div class="quote">« Les bonnes lunettes, c'est celles qu'on oublie qu'on porte. »<small>L'équipe Acuitix Optic</small></div>
       </div>
@@ -567,7 +619,7 @@ footer ul a:hover{color:var(--orange);padding-left:6px}
         </ul>
         <a class="btn btn-orange" href="#commander">Prendre rendez-vous<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
       </div>
-      <div class="exam-img reveal" data-d="1" id="examImg">
+      <div class="exam-img curtain reveal" data-d="1" id="examImg">
         <img src="img/examen.png" alt="Lunettes devant un tableau de lecture, le texte devient net à travers les verres">
         <span class="lens"><i></i>Vision nette</span>
       </div>
@@ -575,7 +627,7 @@ footer ul a:hover{color:var(--orange);padding-left:6px}
   </section>
 
   <section class="section order" id="commander">
-    <svg class="glasses-bg" viewBox="0 0 600 260" fill="none" stroke="#fff" stroke-width="12" stroke-linecap="round" aria-hidden="true"><circle cx="190" cy="130" r="100"/><circle cx="410" cy="130" r="100"/><path d="M290 120q20-24 40 0M90 110 10 80M510 110l80-30"/></svg>
+    <svg class="glasses-bg draw" viewBox="0 0 600 260" fill="none" stroke="#fff" stroke-width="12" stroke-linecap="round" aria-hidden="true"><circle cx="190" cy="130" r="100"/><circle cx="410" cy="130" r="100"/><path d="M290 120q20-24 40 0M90 110 10 80M510 110l80-30"/></svg>
     <div class="wrap order-grid">
       <div class="reveal">
         <span class="eyebrow">Commander ici</span>
@@ -799,6 +851,89 @@ $("#orderForm").addEventListener("submit", async e => {
   }
 });
 $("#yr").textContent = new Date().getFullYear();
+
+// ===== Mouvement =====
+// Titres découpés en mots pour une apparition mot par mot
+$$(".head h2, .split h2, .order h2").forEach(h => {
+  let i = 0;
+  const walk = node => [...node.childNodes].forEach(n => {
+    if (n.nodeType === 3) {
+      const frag = document.createDocumentFragment();
+      n.textContent.split(/(\s+)/).forEach(part => {
+        if (!part) return;
+        if (/^\s+$/.test(part)) { frag.append(part); return; }
+        const w = document.createElement("span"); w.className = "w";
+        const s = document.createElement("span"); s.textContent = part; s.style.setProperty("--i", i++);
+        w.append(s); frag.append(w);
+      });
+      n.replaceWith(frag);
+    } else if (n.nodeType === 1 && n.tagName !== "BR") walk(n);
+  });
+  walk(h);
+});
+
+// Rideaux, lunettes dessinées : même déclencheur que les apparitions
+$$(".curtain, .draw").forEach(el => { if (!el.classList.contains("reveal")) io.observe(el); });
+
+{
+  // Bandeau orange : vitesse et inclinaison liées au défilement
+  const track = $("#marquee"), band = $(".marquee");
+  track.classList.add("js");
+  let x = 0, lastY = scrollY, vel = 0;
+  const loop = () => {
+    const dy = scrollY - lastY; lastY = scrollY;
+    vel += (dy - vel) * .1;
+    x -= 0.6 + Math.abs(vel) * 0.35;
+    const half = track.scrollWidth / 2;
+    if (-x >= half) x += half;
+    track.style.transform = `translateX(${x}px)`;
+    band.style.transform = `rotate(${-1.2 + Math.max(-3, Math.min(3, vel * .15))}deg) scale(1.03)`;
+    requestAnimationFrame(loop);
+  };
+  requestAnimationFrame(loop);
+
+  // Pied de page : le grand « ACUITIX » se remplit au fil du défilement
+  const big = $(".foot-big");
+  addEventListener("scroll", () => {
+    const r = big.getBoundingClientRect();
+    const p = Math.max(0, Math.min(1, (innerHeight - r.top) / (innerHeight * .7)));
+    big.style.setProperty("--p", (p * 100).toFixed(1) + "%");
+  }, {passive:true});
+}
+
+if (fine) {
+  // Haut de page qui suit la souris
+  const hero = $(".hero");
+  hero.addEventListener("mousemove", e => {
+    const r = hero.getBoundingClientRect();
+    hero.style.setProperty("--mx", ((e.clientX - r.left) / r.width - .5).toFixed(3));
+    hero.style.setProperty("--my", ((e.clientY - r.top) / r.height - .5).toFixed(3));
+  });
+  hero.addEventListener("mouseleave", () => { hero.style.setProperty("--mx", 0); hero.style.setProperty("--my", 0); });
+
+  // Boutons aimantés
+  $$(".btn").forEach(b => {
+    b.addEventListener("mousemove", e => {
+      const r = b.getBoundingClientRect();
+      b.style.translate = `${(e.clientX - r.left - r.width / 2) * .25}px ${(e.clientY - r.top - r.height / 2) * .35}px`;
+    });
+    b.addEventListener("mouseleave", () => b.style.translate = "");
+  });
+
+  // Curseur en anneau orange
+  const ring = document.createElement("div"), dot = document.createElement("div");
+  ring.id = "cursor"; dot.id = "cursorDot"; document.body.append(ring, dot);
+  let mx = -100, my = -100, rx = mx, ry = my;
+  addEventListener("mousemove", e => {
+    mx = e.clientX; my = e.clientY;
+    dot.style.transform = `translate(${mx}px,${my}px)`;
+    ring.classList.add("on"); dot.classList.add("on");
+    ring.classList.toggle("big", !!e.target.closest("a, button, .card, .perk, input, select, textarea"));
+  });
+  document.addEventListener("mouseleave", () => { ring.classList.remove("on"); dot.classList.remove("on"); });
+  const follow = () => { rx += (mx - rx) * .18; ry += (my - ry) * .18; ring.style.transform = `translate(${rx}px,${ry}px)`; requestAnimationFrame(follow); };
+  requestAnimationFrame(follow);
+}
 </script>
 </body>
 </html>
