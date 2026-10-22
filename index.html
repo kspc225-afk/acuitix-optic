@@ -1,0 +1,641 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Acuitix Optic – Au-delà de la vue</title>
+<meta name="description" content="Acuitix Optic, votre opticien : lunettes de vue, lunettes de soleil, lentilles et examens de vue. Commandez par téléphone ou par mail.">
+<link rel="icon" href="logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --charcoal:#33312e; --ink:#1f1d1b; --orange:#f5820a; --orange-dark:#d96f00; --orange-soft:#fff1e3;
+  --cream:#faf7f2; --line:#ebe5db; --text:#22201d; --muted:#6c675f; --white:#fff;
+  --radius:24px; --serif:"Cormorant Garamond",Georgia,serif; --sans:"Inter",system-ui,sans-serif;
+  --ease:cubic-bezier(.22,1,.36,1);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;overflow-x:clip}
+body{font-family:var(--sans);color:var(--text);background:var(--white);line-height:1.6;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+img{max-width:100%;display:block}
+.wrap{max-width:1280px;margin:0 auto;padding:0 28px}
+em.o{font-style:italic;color:var(--orange)}
+
+/* Boutons */
+.btn{position:relative;display:inline-flex;align-items:center;gap:10px;padding:15px 28px;border-radius:999px;font-weight:600;font-size:.95rem;border:0;cursor:pointer;font-family:inherit;overflow:hidden;isolation:isolate;transition:transform .3s var(--ease),box-shadow .3s}
+.btn::before{content:"";position:absolute;inset:0;border-radius:inherit;transform:scaleX(0);transform-origin:right;transition:transform .5s var(--ease);z-index:-1}
+.btn:hover::before{transform:scaleX(1);transform-origin:left}
+.btn:hover{transform:translateY(-2px)}
+.btn svg{transition:transform .3s var(--ease)}
+.btn:hover svg{transform:translateX(4px)}
+.btn-orange{background:var(--orange);color:#fff;box-shadow:0 10px 30px -10px rgba(245,130,10,.7)}.btn-orange::before{background:var(--ink)}
+.btn-light{background:#fff;color:var(--ink)}.btn-light::before{background:var(--orange)}.btn-light:hover{color:#fff}
+.btn-ghost{background:transparent;color:#fff;box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.4)}.btn-ghost::before{background:#fff}.btn-ghost:hover{color:var(--ink)}
+.btn-dark{background:var(--ink);color:#fff}.btn-dark::before{background:var(--orange)}
+
+/* Préchargeur */
+#loader{position:fixed;inset:0;background:var(--charcoal);z-index:200;display:grid;place-items:center;transition:opacity .6s,visibility .6s}
+#loader.done{opacity:0;visibility:hidden}
+#loader svg{width:140px}
+#loader circle,#loader path{stroke-dasharray:400;stroke-dashoffset:400;animation:draw 1.2s var(--ease) forwards}
+#loader path{animation-delay:.35s}
+@keyframes draw{to{stroke-dashoffset:0}}
+
+/* Barre de progression */
+#progress{position:fixed;top:0;left:0;height:3px;background:var(--orange);width:0;z-index:120}
+
+/* Bandeau défilant haut */
+.topbar{background:var(--ink);color:#e9e4dc;font-size:.8rem;overflow:hidden;white-space:nowrap}
+.ticker{display:inline-flex;gap:48px;padding:10px 0;animation:ticker 32s linear infinite}
+.ticker span{display:inline-flex;align-items:center;gap:10px}
+.ticker b{color:var(--orange)}
+.ticker span::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--orange)}
+@keyframes ticker{to{transform:translateX(-50%)}}
+
+/* En-tête */
+header.main{position:sticky;top:0;z-index:100;background:rgba(255,255,255,.82);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid transparent;transition:.3s}
+header.main.scrolled{border-color:var(--line);box-shadow:0 8px 30px -18px rgba(0,0,0,.25)}
+header.main .wrap{display:flex;align-items:center;gap:28px;height:84px;transition:height .3s}
+header.main.scrolled .wrap{height:70px}
+.brand{display:flex;align-items:center;gap:12px}
+.brand img{width:54px;height:54px;border-radius:14px;object-fit:cover;transition:transform .5s var(--ease)}
+.brand:hover img{transform:rotate(-8deg) scale(1.05)}
+.brand .name{font-family:var(--serif);font-weight:700;font-size:1.5rem;letter-spacing:.08em;line-height:1}
+.brand .name span{color:var(--orange)}
+.brand small{display:block;font-family:var(--sans);font-size:.68rem;letter-spacing:.03em;color:var(--orange-dark);font-style:italic;font-weight:500;margin-top:4px}
+nav.menu{display:flex;gap:30px;font-weight:500;font-size:.93rem;margin-left:auto}
+nav.menu a{position:relative;padding:6px 0}
+nav.menu a::after{content:"";position:absolute;left:0;bottom:0;height:2px;width:100%;background:var(--orange);transform:scaleX(0);transform-origin:right;transition:transform .4s var(--ease)}
+nav.menu a:hover::after{transform:scaleX(1);transform-origin:left}
+.head-cta{display:flex;gap:10px;align-items:center}
+.icon-btn{display:grid;place-items:center;width:44px;height:44px;border-radius:50%;background:var(--cream);transition:.3s}
+.icon-btn:hover{background:var(--orange);color:#fff;transform:rotate(-10deg)}
+.head-cta .btn{padding:12px 22px}
+.burger{display:none;background:none;border:0;cursor:pointer;width:44px;height:44px}
+.mobile-nav{display:none}
+
+/* Héros */
+.hero{position:relative;background:var(--charcoal);color:#fff;overflow:hidden}
+.hero .wrap{display:grid;grid-template-columns:1.05fr 1fr;gap:40px;align-items:center;min-height:calc(100vh - 124px);padding-top:60px;padding-bottom:60px}
+.blob{position:absolute;border-radius:50%;filter:blur(80px);opacity:.45;animation:blob 14s ease-in-out infinite alternate}
+.blob.b1{width:520px;height:520px;background:var(--orange);top:-160px;right:-120px}
+.blob.b2{width:380px;height:380px;background:#8a5a2b;bottom:-160px;left:-100px;animation-delay:-6s}
+@keyframes blob{to{transform:translate(-60px,50px) scale(1.15)}}
+.eyebrow{display:inline-flex;align-items:center;gap:10px;font-size:.78rem;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--orange)}
+.eyebrow::before{content:"";width:34px;height:1.5px;background:currentColor}
+.hero h1{font-family:var(--serif);font-weight:600;font-size:clamp(3rem,6.4vw,5.6rem);line-height:.98;margin:22px 0 24px;letter-spacing:-.01em}
+.hero h1 .line{display:block;overflow:hidden}
+.hero h1 .line>span{display:inline-block;transform:translateY(110%);animation:rise 1s var(--ease) forwards}
+.hero h1 .line:nth-child(2)>span{animation-delay:.12s}
+.hero h1 .line:nth-child(3)>span{animation-delay:.24s}
+@keyframes rise{to{transform:none}}
+.hero p.lead{font-size:1.1rem;color:#d6d0c7;max-width:470px;margin-bottom:34px}
+.hero .ctas{display:flex;gap:14px;flex-wrap:wrap}
+.hero .badges{display:flex;gap:28px;margin-top:48px;flex-wrap:wrap}
+.hero .badges div{border-left:2px solid var(--orange);padding-left:14px}
+.hero .badges b{display:block;font-family:var(--serif);font-size:1.6rem;font-weight:600;line-height:1.1}
+.hero .badges span{font-size:.82rem;color:#bdb6ac}
+.fade-up{opacity:0;transform:translateY(30px);animation:fadeUp 1s var(--ease) forwards}
+@keyframes fadeUp{to{opacity:1;transform:none}}
+.hero-visual{position:relative;justify-self:center;width:100%;max-width:560px}
+.hero-photo{position:relative;border-radius:280px 280px 32px 32px;overflow:hidden;aspect-ratio:4/5;box-shadow:0 40px 80px -30px rgba(0,0,0,.6);animation:fadeUp 1.2s .3s var(--ease) both}
+.hero-photo img{width:100%;height:100%;object-fit:cover;object-position:40% center;transform:scale(1.12);animation:zoomOut 2.2s .3s var(--ease) forwards}
+@keyframes zoomOut{to{transform:scale(1)}}
+.ring{position:absolute;inset:-26px;border:1.5px dashed rgba(245,130,10,.55);border-radius:300px 300px 48px 48px;animation:spinDash 40s linear infinite;pointer-events:none}
+@keyframes spinDash{to{stroke-dashoffset:0;filter:hue-rotate(0)}}
+.float-card{position:absolute;background:#fff;color:var(--ink);border-radius:18px;padding:14px 18px;display:flex;gap:12px;align-items:center;box-shadow:0 24px 50px -20px rgba(0,0,0,.45);font-size:.85rem;animation:float 5s ease-in-out infinite}
+.float-card .ic{width:40px;height:40px;border-radius:12px;background:var(--orange-soft);color:var(--orange);display:grid;place-items:center;flex:none}
+.float-card b{display:block;font-size:.92rem}
+.float-card small{color:var(--muted)}
+.fc1{left:-46px;top:22%}
+.fc2{right:-30px;bottom:14%;animation-delay:-2.5s}
+@keyframes float{50%{transform:translateY(-14px)}}
+.scroll-hint{position:absolute;left:50%;bottom:22px;transform:translateX(-50%);width:26px;height:42px;border:1.5px solid rgba(255,255,255,.4);border-radius:20px}
+.scroll-hint::after{content:"";position:absolute;left:50%;top:8px;width:4px;height:8px;border-radius:2px;background:var(--orange);transform:translateX(-50%);animation:wheel 1.8s infinite}
+@keyframes wheel{to{transform:translate(-50%,14px);opacity:0}}
+
+/* Bandeau mots */
+.marquee-wrap{overflow:hidden;margin-top:-14px;padding:14px 0;position:relative;z-index:2}
+.marquee{background:var(--orange);color:#fff;overflow:hidden;white-space:nowrap;padding:22px 0;transform:rotate(-1.2deg) scale(1.03)}
+.marquee .track{display:inline-flex;gap:46px;animation:ticker 26s linear infinite;font-family:var(--serif);font-size:2rem;font-weight:600;font-style:italic}
+.marquee .track span{display:inline-flex;align-items:center;gap:46px}
+.marquee .track span::after{content:"✦";font-style:normal;font-size:1.2rem;color:var(--ink)}
+
+/* Apparition au défilement */
+.reveal{opacity:0;transform:translateY(40px);transition:opacity 1s var(--ease),transform 1s var(--ease)}
+.reveal.in{opacity:1;transform:none}
+.reveal[data-d="1"]{transition-delay:.1s}.reveal[data-d="2"]{transition-delay:.2s}.reveal[data-d="3"]{transition-delay:.3s}
+
+.section{padding:110px 0}
+.head{text-align:center;max-width:680px;margin:0 auto 56px}
+.head h2,.split h2{font-family:var(--serif);font-size:clamp(2.3rem,4.4vw,3.6rem);font-weight:600;line-height:1.05;margin:14px 0 14px}
+.head p{color:var(--muted)}
+
+/* Engagements */
+.perks{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+.perk{background:var(--cream);border-radius:var(--radius);padding:32px 26px;transition:transform .5s var(--ease),background .4s,color .4s;position:relative;overflow:hidden}
+.perk::after{content:"";position:absolute;width:160px;height:160px;border-radius:50%;background:var(--orange);opacity:.08;right:-60px;bottom:-60px;transition:transform .6s var(--ease)}
+.perk:hover{transform:translateY(-8px);background:var(--charcoal);color:#fff}
+.perk:hover::after{transform:scale(2.4);opacity:.18}
+.perk .ic{width:56px;height:56px;border-radius:16px;background:#fff;color:var(--orange);display:grid;place-items:center;margin-bottom:22px;transition:transform .5s var(--ease)}
+.perk:hover .ic{transform:rotate(-12deg) scale(1.08)}
+.perk b{display:block;font-size:1.1rem;margin-bottom:6px}
+.perk span{font-size:.9rem;color:var(--muted);transition:color .4s}
+.perk:hover span{color:#cfc8be}
+
+/* Collection mise en avant */
+.split{display:grid;grid-template-columns:1.1fr 1fr;gap:70px;align-items:center}
+.photo-stack{position:relative}
+.photo-stack .main-img{border-radius:var(--radius);overflow:hidden;aspect-ratio:3/2;box-shadow:0 40px 70px -40px rgba(0,0,0,.45)}
+.photo-stack .main-img img{width:100%;height:115%;object-fit:cover;will-change:transform}
+.photo-stack .stamp{position:absolute;right:-28px;top:-34px;width:130px;height:130px;animation:spin 18s linear infinite}
+.photo-stack .stamp text{font:600 11.5px var(--sans);letter-spacing:3.4px;fill:var(--charcoal)}
+@keyframes spin{to{transform:rotate(360deg)}}
+.photo-stack .tag{position:absolute;left:-22px;bottom:30px;background:var(--orange);color:#fff;padding:14px 20px;border-radius:16px;font-weight:600;box-shadow:0 20px 40px -18px rgba(245,130,10,.8);animation:float 6s ease-in-out infinite}
+.split p{color:var(--muted);margin-bottom:22px}
+.checks{list-style:none;display:grid;gap:12px;margin:0 0 32px}
+.checks li{display:flex;gap:12px;align-items:center;font-weight:500}
+.checks li::before{content:"";flex:none;width:24px;height:24px;border-radius:50%;background:var(--orange-soft) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23f5820a' stroke-width='3'%3E%3Cpath d='M5 12l5 5 9-10'/%3E%3C/svg%3E") center/13px no-repeat}
+
+/* Produits */
+.shop{background:var(--cream)}
+.filters{display:flex;justify-content:center;gap:8px;margin:-24px 0 44px;flex-wrap:wrap}
+.filters button{border:0;background:#fff;padding:11px 24px;border-radius:999px;font:600 .9rem var(--sans);cursor:pointer;color:var(--muted);transition:.3s}
+.filters button:hover{color:var(--ink)}
+.filters button.on{background:var(--ink);color:#fff}
+.products{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.card{background:#fff;border-radius:var(--radius);overflow:hidden;display:flex;flex-direction:column;transition:transform .5s var(--ease),box-shadow .5s,opacity .4s;transform-style:preserve-3d}
+.card:hover{box-shadow:0 30px 60px -30px rgba(0,0,0,.3)}
+.card.hide{display:none}
+.card .img{position:relative;aspect-ratio:4/3;display:grid;place-items:center;background:#fff;overflow:hidden}
+.card .img::before{content:"";position:absolute;width:70%;aspect-ratio:1;border-radius:50%;background:var(--orange-soft);transform:scale(.6);opacity:0;transition:.6s var(--ease)}
+.card:hover .img::before{transform:scale(1);opacity:1}
+.card .img img{position:relative;width:82%;height:82%;object-fit:contain;mix-blend-mode:multiply;transition:transform .7s var(--ease)}
+.card:hover .img img{transform:scale(1.08) rotate(-3deg)}
+.card .badge{position:absolute;top:16px;left:16px;background:var(--ink);color:#fff;font-size:.68rem;font-weight:700;letter-spacing:.1em;padding:6px 12px;border-radius:999px;z-index:1}
+.card .badge.o{background:var(--orange)}
+.card .fav{position:absolute;top:12px;right:12px;width:40px;height:40px;border-radius:50%;background:var(--cream);display:grid;place-items:center;border:0;cursor:pointer;z-index:1;transition:.3s}
+.card .fav:hover{transform:scale(1.1)}
+.card .fav.on{animation:pop .4s var(--ease)}
+.card .fav.on svg{fill:var(--orange);stroke:var(--orange)}
+@keyframes pop{50%{transform:scale(1.35)}}
+.card .body{padding:22px 24px 24px;display:flex;flex-direction:column;gap:2px;flex:1;border-top:1px solid var(--line)}
+.card .kind{font-size:.72rem;letter-spacing:.14em;color:var(--orange-dark);font-weight:700;text-transform:uppercase}
+.card h4{font-family:var(--serif);font-size:1.55rem;font-weight:600}
+.card .desc{font-size:.88rem;color:var(--muted)}
+.card .foot{display:flex;justify-content:space-between;align-items:center;margin-top:16px}
+.swatches{display:flex;gap:6px}
+.swatches i{width:18px;height:18px;border-radius:50%;border:2.5px solid #fff;box-shadow:0 0 0 1px var(--line);cursor:pointer;transition:transform .2s}
+.swatches i:hover{transform:scale(1.2)}
+.card .go{display:inline-flex;align-items:center;gap:8px;font-size:.85rem;font-weight:600;background:var(--ink);color:#fff;padding:10px 16px;border-radius:999px;transition:.3s}
+.card .go:hover{background:var(--orange)}
+
+/* Étapes */
+.steps-sec{background:var(--charcoal);color:#fff;position:relative;overflow:hidden}
+.steps-sec .split{grid-template-columns:1fr 1.1fr}
+.portrait{position:relative;border-radius:var(--radius);overflow:hidden;aspect-ratio:4/5}
+.portrait img{width:100%;height:100%;object-fit:cover;object-position:35% center;transition:transform 1.2s var(--ease)}
+.portrait:hover img{transform:scale(1.05)}
+.portrait .quote{position:absolute;left:20px;right:20px;bottom:20px;background:rgba(31,29,27,.72);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-radius:18px;padding:20px 22px;font-family:var(--serif);font-size:1.35rem;font-style:italic;line-height:1.3}
+.portrait .quote small{display:block;font-family:var(--sans);font-style:normal;font-size:.78rem;color:var(--orange);margin-top:8px;font-weight:600;letter-spacing:.08em;text-transform:uppercase}
+.steps-sec p.lead{color:#cfc8be;margin-bottom:34px}
+.steps{display:grid;gap:16px;counter-reset:s}
+.step{display:flex;gap:20px;align-items:flex-start;padding:22px 24px;border-radius:20px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);transition:.4s var(--ease)}
+.step:hover{background:rgba(245,130,10,.12);border-color:rgba(245,130,10,.5);transform:translateX(8px)}
+.step::before{counter-increment:s;content:"0" counter(s);font-family:var(--serif);font-size:2.2rem;font-weight:600;color:var(--orange);line-height:1}
+.step b{display:block;font-size:1.05rem;margin-bottom:4px}
+.step span{color:#bdb6ac;font-size:.92rem}
+
+/* Examen */
+.exam-img{position:relative;border-radius:var(--radius);overflow:hidden;aspect-ratio:5/3}
+.exam-img img{width:100%;height:100%;object-fit:cover;filter:blur(10px);transform:scale(1.08);transition:filter 1.6s var(--ease),transform 1.6s var(--ease)}
+.exam-img.in img{filter:blur(0);transform:scale(1)}
+.exam-img .lens{position:absolute;top:16px;left:16px;background:#fff;border-radius:999px;padding:8px 14px;font-size:.8rem;font-weight:600;display:flex;gap:8px;align-items:center}
+.exam-img .lens i{width:8px;height:8px;border-radius:50%;background:#2ecc71;animation:pulse 1.6s infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(46,204,113,.6)}100%{box-shadow:0 0 0 10px rgba(46,204,113,0)}}
+
+/* Commande */
+.order{background:linear-gradient(135deg,var(--ink),var(--charcoal));color:#fff;position:relative;overflow:hidden}
+.order .glasses-bg{position:absolute;right:-120px;top:40px;width:620px;opacity:.07}
+.order-grid{display:grid;grid-template-columns:1fr 1.05fr;gap:60px;align-items:start;position:relative}
+.order h2{font-family:var(--serif);font-size:clamp(2.4rem,4.6vw,3.8rem);font-weight:600;line-height:1.02}
+.order h2 span{color:var(--orange)}
+.order .sub{font-family:var(--serif);font-style:italic;font-size:1.4rem;color:var(--orange);margin:6px 0 16px}
+.order p.lead{color:#cfc8be;margin-bottom:30px}
+.contact-list{display:grid;gap:14px}
+.contact-list a{display:flex;align-items:center;gap:16px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:18px;padding:18px 20px;transition:.4s var(--ease)}
+.contact-list a:hover{background:var(--orange);border-color:var(--orange);transform:translateX(8px)}
+.contact-list .ic{width:50px;height:50px;border-radius:14px;background:var(--orange);color:#fff;display:grid;place-items:center;flex:none;transition:.4s}
+.contact-list a:hover .ic{background:#fff;color:var(--orange)}
+.contact-list small{display:block;color:#bdb6ac;font-size:.78rem;transition:.4s}
+.contact-list a:hover small{color:#fff}
+.contact-list b{font-size:1.15rem;letter-spacing:.03em}
+.contact-list .arrow{margin-left:auto;opacity:.5}
+form.order-form{background:#fff;color:var(--text);border-radius:var(--radius);padding:36px;display:grid;gap:16px;box-shadow:0 40px 80px -40px rgba(0,0,0,.6)}
+form.order-form h3{font-family:var(--serif);font-size:1.8rem;font-weight:600}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.fld{position:relative}
+.fld input,.fld select,.fld textarea{font:inherit;font-size:.95rem;border:1.5px solid var(--line);border-radius:14px;padding:22px 16px 8px;outline:0;background:#fff;width:100%;transition:border-color .3s,box-shadow .3s}
+.fld select{padding-top:24px}
+.fld textarea{min-height:120px;resize:vertical}
+.fld label{position:absolute;left:17px;top:15px;font-size:.92rem;color:var(--muted);pointer-events:none;transition:.25s var(--ease)}
+.fld input:focus,.fld select:focus,.fld textarea:focus{border-color:var(--orange);box-shadow:0 0 0 4px var(--orange-soft)}
+.fld input:focus+label,.fld input:not(:placeholder-shown)+label,.fld textarea:focus+label,.fld textarea:not(:placeholder-shown)+label,.fld select+label{top:6px;font-size:.7rem;font-weight:600;color:var(--orange-dark)}
+.form-note{font-size:.78rem;color:var(--muted)}
+
+/* Pied de page */
+footer{background:var(--ink);color:#cfc8be;padding:80px 0 26px;font-size:.92rem}
+.foot-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:40px}
+footer h5{color:#fff;font-size:1rem;margin-bottom:16px}
+footer ul{list-style:none;display:grid;gap:10px}
+footer ul a{transition:.3s}
+footer ul a:hover{color:var(--orange);padding-left:6px}
+.foot-brand img{width:110px;border-radius:18px;margin-bottom:16px}
+.foot-big{font-family:var(--serif);font-size:clamp(3rem,11vw,9.5rem);font-weight:700;line-height:.9;letter-spacing:.04em;color:transparent;-webkit-text-stroke:1px #4a4641;margin:60px 0 10px;text-align:center;white-space:nowrap}
+.foot-big span{-webkit-text-stroke:1px var(--orange)}
+.foot-bottom{border-top:1px solid #3a3734;padding-top:22px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;font-size:.8rem;color:#8f887e}
+
+#toTop{position:fixed;right:22px;bottom:22px;width:52px;height:52px;border-radius:50%;background:var(--orange);color:#fff;border:0;display:grid;place-items:center;cursor:pointer;z-index:90;box-shadow:0 14px 30px -10px rgba(245,130,10,.8);transform:translateY(100px);transition:transform .5s var(--ease)}
+#toTop.show{transform:none}
+.toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(140px);background:var(--ink);color:#fff;padding:14px 24px;border-radius:999px;font-weight:500;transition:.5s var(--ease);z-index:150;display:flex;gap:10px;align-items:center}
+.toast.show{transform:translateX(-50%) translateY(0)}
+
+@media (max-width:1100px){
+  nav.menu,.head-cta .btn{display:none}
+  .burger{display:grid;place-items:center}
+  .mobile-nav{position:fixed;inset:0;background:var(--charcoal);z-index:150;display:flex;flex-direction:column;justify-content:center;gap:10px;padding:40px 30px;transform:translateY(-100%);transition:transform .6s var(--ease)}
+  .mobile-nav.open{transform:none}
+  .mobile-nav a{font-family:var(--serif);font-size:2.4rem;color:#fff;font-weight:600}
+  .mobile-nav a:hover{color:var(--orange)}
+  .mobile-nav .close{position:absolute;top:24px;right:24px;background:none;border:0;color:#fff;font-size:2rem;cursor:pointer}
+  .hero .wrap{grid-template-columns:1fr;min-height:auto;padding-top:50px;padding-bottom:90px}
+  .hero-visual{max-width:440px}
+  .perks{grid-template-columns:repeat(2,1fr)}
+  .split,.steps-sec .split,.order-grid{grid-template-columns:1fr;gap:50px}
+  .products{grid-template-columns:repeat(2,1fr)}
+  .foot-grid{grid-template-columns:1fr 1fr}
+  .portrait{aspect-ratio:4/3}
+}
+@media (max-width:680px){
+  .wrap{padding:0 16px}
+  header.main .wrap{height:70px;gap:12px}
+  .brand img{width:44px;height:44px}
+  .brand .name{font-size:1.2rem}
+  .head-cta .icon-btn.mail{display:none}
+  .fc1{left:-8px}.fc2{right:-8px}
+  .float-card{padding:10px 12px;font-size:.78rem}
+  .hero .badges{gap:18px}
+  .marquee .track{font-size:1.5rem}
+  .section{padding:76px 0}
+  .perks,.products,.row,.foot-grid{grid-template-columns:1fr}
+  .photo-stack .stamp{width:96px;height:96px;right:-6px;top:-30px}
+  .photo-stack .tag{left:10px}
+  form.order-form{padding:24px 18px}
+  .ring{inset:-12px}
+  .order h2{font-size:2.2rem}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+  .reveal{opacity:1;transform:none}
+}
+</style>
+</head>
+<body>
+
+<div id="loader">
+  <svg viewBox="0 0 200 90" fill="none" stroke="#f5820a" stroke-width="7" stroke-linecap="round">
+    <circle cx="55" cy="45" r="32"/><circle cx="145" cy="45" r="32"/><path d="M87 40q13-12 26 0M23 38 4 30M177 38l19-8"/>
+  </svg>
+</div>
+<div id="progress"></div>
+
+<div class="topbar">
+  <div class="ticker" id="ticker">
+    <span>Commandez par téléphone : <b>07 59 54 95 94</b></span>
+    <span>Ou au <b>01 73 49 31 26</b></span>
+    <span>Réponse rapide à toutes vos demandes</span>
+    <span>Examen de vue et conseils personnalisés</span>
+    <span>Écrivez-nous : <b>acuitixoptic@gmail.com</b></span>
+  </div>
+</div>
+
+<header class="main" id="hdr">
+  <div class="wrap">
+    <a class="brand" href="#">
+      <img src="logo.png" alt="Logo Acuitix Optic">
+      <div class="name">ACUITI<span>X</span> OPTIC<small>Au-delà de la vue !</small></div>
+    </a>
+    <nav class="menu">
+      <a href="#collection">Collection</a>
+      <a href="#boutique">Nos montures</a>
+      <a href="#examen">Examen de vue</a>
+      <a href="#commander">Contact</a>
+    </nav>
+    <div class="head-cta">
+      <a class="icon-btn" href="tel:+33759549594" aria-label="Appeler"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/></svg></a>
+      <a class="icon-btn mail" href="mailto:acuitixoptic@gmail.com" aria-label="Mail"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 6l-10 7L2 6"/></svg></a>
+      <a class="btn btn-orange" href="#commander">Commander<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      <button class="burger" id="burger" aria-label="Ouvrir le menu"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7h18M3 12h18M3 17h18"/></svg></button>
+    </div>
+  </div>
+</header>
+
+<nav class="mobile-nav" id="mnav">
+  <button class="close" id="mclose" aria-label="Fermer">✕</button>
+  <a href="#collection">Collection</a>
+  <a href="#boutique">Nos montures</a>
+  <a href="#examen">Examen de vue</a>
+  <a href="#commander">Commander</a>
+</nav>
+
+<main>
+  <section class="hero">
+    <div class="blob b1"></div><div class="blob b2"></div>
+    <div class="wrap">
+      <div>
+        <span class="eyebrow fade-up" style="animation-delay:.1s">Votre opticien</span>
+        <h1>
+          <span class="line"><span>Voir mieux,</span></span>
+          <span class="line"><span>voir <em class="o">au-delà</em></span></span>
+          <span class="line"><span>de la vue.</span></span>
+        </h1>
+        <p class="lead fade-up" style="animation-delay:.45s">Chez Acuitix Optic, nos opticiens vous accompagnent du choix de la monture jusqu'à l'ajustement final, pour une vision nette et un style qui vous ressemble.</p>
+        <div class="ctas fade-up" style="animation-delay:.6s">
+          <a class="btn btn-orange" href="#commander">Commander ma paire<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+          <a class="btn btn-ghost" href="#boutique">Voir les montures</a>
+        </div>
+        <div class="badges fade-up" style="animation-delay:.75s">
+          <div><b>Vue</b><span>Montures &amp; verres</span></div>
+          <div><b>Soleil</b><span>Protection UV400</span></div>
+          <div><b>Conseil</b><span>Sur mesure</span></div>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <div class="ring"></div>
+        <div class="hero-photo"><img src="img/opticien.webp" alt="Opticien présentant une monture écaille en magasin"></div>
+        <div class="float-card fc1"><span class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/></svg></span><div><b>Examen de vue</b><small>En magasin</small></div></div>
+        <div class="float-card fc2"><span class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/></svg></span><div><b>Commande rapide</b><small>07 59 54 95 94</small></div></div>
+      </div>
+    </div>
+    <div class="scroll-hint" aria-hidden="true"></div>
+  </section>
+
+  <div class="marquee-wrap" aria-hidden="true"><div class="marquee">
+    <div class="track" id="marquee">
+      <span>Lunettes de vue</span><span>Lunettes de soleil</span><span>Lentilles de contact</span><span>Examen de vue</span><span>Ajustage offert</span>
+    </div>
+  </div></div>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="head reveal">
+        <span class="eyebrow">Nos engagements</span>
+        <h2>Un service pensé <em class="o">pour vous</em></h2>
+        <p>Une équipe à l'écoute, des conseils sincères et un suivi après l'achat.</p>
+      </div>
+      <div class="perks">
+        <div class="perk reveal" data-d="0"><div class="ic"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/></svg></div><b>Examen de vue</b><span>Contrôle de la vue et prise de mesures précises.</span></div>
+        <div class="perk reveal" data-d="1"><div class="ic"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><b>Tiers payant</b><span>Avec votre mutuelle et la Sécurité sociale.</span></div>
+        <div class="perk reveal" data-d="2"><div class="ic"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18v3h3l6.3-6.3a4 4 0 0 0 5.4-5.4l-2.5 2.5-2.4-.6-.6-2.4z"/></svg></div><b>Ajustage offert</b><span>Réglages et entretien de vos lunettes.</span></div>
+        <div class="perk reveal" data-d="3"><div class="ic"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div><b>Réponse rapide</b><span>Par téléphone ou par mail, sans attendre.</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="collection" style="padding-top:0">
+    <div class="wrap split">
+      <div class="photo-stack reveal">
+        <div class="main-img"><img src="img/collection.png" alt="Sélection de montures écaille, noires, vertes et métal" data-parallax></div>
+        <svg class="stamp" viewBox="0 0 120 120" aria-hidden="true">
+          <defs><path id="circ" d="M60 60m-46 0a46 46 0 1 1 92 0a46 46 0 1 1-92 0"/></defs>
+          <circle cx="60" cy="60" r="58" fill="#fff"/>
+          <text><textPath href="#circ">ACUITIX OPTIC • AU-DELÀ DE LA VUE •</textPath></text>
+          <circle cx="60" cy="60" r="16" fill="#f5820a"/>
+        </svg>
+        <div class="tag">Nouvelle collection ✦</div>
+      </div>
+      <div class="reveal" data-d="1">
+        <span class="eyebrow">La collection</span>
+        <h2>Une monture,<br><em class="o">mille regards</em></h2>
+        <p>Écaille, acétate coloré, métal fin ou formes papillon : trouvez la paire qui révèle votre visage. Nos opticiens vous guident selon votre morphologie et votre quotidien.</p>
+        <ul class="checks">
+          <li>Verres amincis, anti-reflets et anti-lumière bleue</li>
+          <li>Solaires correctrices sur demande</li>
+          <li>Conseils morphologie et style</li>
+        </ul>
+        <a class="btn btn-dark" href="#boutique">Découvrir les montures<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section shop" id="boutique">
+    <div class="wrap">
+      <div class="head reveal">
+        <span class="eyebrow">Nos montures</span>
+        <h2>Choisissez, <em class="o">on s'occupe du reste</em></h2>
+      </div>
+      <div class="filters reveal" role="tablist">
+        <button class="on" data-f="all">Toutes</button>
+        <button data-f="vue">Lunettes de vue</button>
+        <button data-f="soleil">Soleil</button>
+      </div>
+      <div class="products" id="products"></div>
+    </div>
+  </section>
+
+  <section class="section steps-sec">
+    <div class="wrap split">
+      <div class="portrait reveal">
+        <img src="img/portrait.png" alt="Homme ajustant ses lunettes à monture noire">
+        <div class="quote">« Les bonnes lunettes, c'est celles qu'on oublie qu'on porte. »<small>L'équipe Acuitix Optic</small></div>
+      </div>
+      <div class="reveal" data-d="1">
+        <span class="eyebrow">Comment commander</span>
+        <h2>Votre paire en <em class="o">3 étapes</em></h2>
+        <p class="lead">Simple, rapide et sans engagement : contactez-nous, nous nous chargeons de tout.</p>
+        <div class="steps">
+          <div class="step"><div><b>Choisissez votre modèle</b><span>Parcourez nos montures ou décrivez-nous ce que vous cherchez.</span></div></div>
+          <div class="step"><div><b>Contactez-nous</b><span>Par téléphone, par mail ou via le formulaire, avec votre ordonnance si vous en avez une.</span></div></div>
+          <div class="step"><div><b>Ajustage et retrait</b><span>Nous préparons vos lunettes et les ajustons parfaitement à votre visage.</span></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="examen">
+    <div class="wrap split">
+      <div class="reveal">
+        <span class="eyebrow">Service</span>
+        <h2>Prendre soin de sa vue, <em class="o">tout simplement</em></h2>
+        <p>Nos opticiens réalisent un contrôle de votre vue et vous orientent vers la solution la plus adaptée : lunettes, lentilles ou les deux.</p>
+        <ul class="checks">
+          <li>Contrôle de la vue et prise de mesures</li>
+          <li>Lentilles de contact et produits d'entretien</li>
+          <li>Suivi et réglages après l'achat</li>
+        </ul>
+        <a class="btn btn-orange" href="#commander">Prendre rendez-vous<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      </div>
+      <div class="exam-img reveal" data-d="1" id="examImg">
+        <img src="img/examen.png" alt="Lunettes devant un tableau de lecture, le texte devient net à travers les verres">
+        <span class="lens"><i></i>Vision nette</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="section order" id="commander">
+    <svg class="glasses-bg" viewBox="0 0 600 260" fill="none" stroke="#fff" stroke-width="12" stroke-linecap="round" aria-hidden="true"><circle cx="190" cy="130" r="100"/><circle cx="410" cy="130" r="100"/><path d="M290 120q20-24 40 0M90 110 10 80M510 110l80-30"/></svg>
+    <div class="wrap order-grid">
+      <div class="reveal">
+        <span class="eyebrow">Commander ici</span>
+        <h2 style="margin-top:14px">ACUITI<span>X</span> OPTIC</h2>
+        <div class="sub">(Au-delà de la vue) !</div>
+        <p class="lead">Nous vous répondrons le plus rapidement possible.</p>
+        <div class="contact-list">
+          <a href="tel:+33759549594"><span class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="6" y="2" width="12" height="20" rx="2"/><path d="M11 18h2"/></svg></span><span><small>Cel</small><b>07.59.54.95.94</b></span><svg class="arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17 17 7M8 7h9v9"/></svg></a>
+          <a href="tel:+33173493126"><span class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/></svg></span><span><small>Cel</small><b>01.73.49.31.26</b></span><svg class="arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17 17 7M8 7h9v9"/></svg></a>
+          <a href="mailto:acuitixoptic@gmail.com"><span class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 6l-10 7L2 6"/></svg></span><span><small>Mail</small><b>acuitixoptic@gmail.com</b></span><svg class="arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17 17 7M8 7h9v9"/></svg></a>
+        </div>
+      </div>
+      <form class="order-form reveal" data-d="1" id="orderForm">
+        <h3>Votre demande</h3>
+        <div class="row">
+          <div class="fld"><input name="nom" id="f-nom" placeholder=" " required><label for="f-nom">Nom complet</label></div>
+          <div class="fld"><input name="tel" id="f-tel" type="tel" placeholder=" " required><label for="f-tel">Téléphone</label></div>
+        </div>
+        <div class="fld"><input name="email" id="f-mail" type="email" placeholder=" "><label for="f-mail">E-mail</label></div>
+        <div class="row">
+          <div class="fld">
+            <select name="type" id="typeSel">
+              <option>Commande de lunettes de vue</option>
+              <option>Commande de lunettes de soleil</option>
+              <option>Lentilles de contact</option>
+              <option>Prise de rendez-vous</option>
+              <option>Autre question</option>
+            </select><label for="typeSel">Type de demande</label>
+          </div>
+          <div class="fld"><input name="modele" id="modeleInput" placeholder=" "><label for="modeleInput">Modèle souhaité</label></div>
+        </div>
+        <div class="fld"><textarea name="message" id="f-msg" placeholder=" "></textarea><label for="f-msg">Votre message (correction, préférences, disponibilités…)</label></div>
+        <button class="btn btn-orange" type="submit" style="justify-content:center">Envoyer ma demande<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+        <p class="form-note">Le bouton ouvre votre messagerie avec la demande pré-remplie à destination de acuitixoptic@gmail.com.</p>
+      </form>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <img src="logo.png" alt="Acuitix Optic">
+        <p>Votre opticien de confiance.<br>Au-delà de la vue !</p>
+      </div>
+      <div><h5>Nos produits</h5><ul><li><a href="#boutique">Lunettes de vue</a></li><li><a href="#boutique">Lunettes de soleil</a></li><li><a href="#commander">Lentilles</a></li></ul></div>
+      <div><h5>Services</h5><ul><li><a href="#examen">Examen de vue</a></li><li><a href="#commander">Prendre rendez-vous</a></li><li><a href="#commander">Ajustage &amp; entretien</a></li></ul></div>
+      <div><h5>Contact</h5><ul><li><a href="tel:+33759549594">07.59.54.95.94</a></li><li><a href="tel:+33173493126">01.73.49.31.26</a></li><li><a href="mailto:acuitixoptic@gmail.com">acuitixoptic@gmail.com</a></li></ul></div>
+    </div>
+    <div class="foot-big" aria-hidden="true">ACUITI<span>X</span></div>
+    <div class="foot-bottom"><span>© <span id="yr"></span> Acuitix Optic — Tous droits réservés</span><span>Mentions légales · Confidentialité</span></div>
+  </div>
+</footer>
+
+<button id="toTop" aria-label="Revenir en haut"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 19V5M6 11l6-6 6 6"/></svg></button>
+<div class="toast" id="toast"></div>
+
+<script>
+const $ = s => document.querySelector(s), $$ = s => document.querySelectorAll(s);
+
+// Préchargeur
+addEventListener("load", () => setTimeout(() => $("#loader").classList.add("done"), 700));
+setTimeout(() => $("#loader").classList.add("done"), 3000);
+
+// Bandeaux défilants : on duplique le contenu pour une boucle continue
+["#ticker", "#marquee"].forEach(s => { const el = $(s); el.innerHTML += el.innerHTML; });
+
+// Produits
+const products = [
+  {n:"Atelier", cat:"vue", kind:"Lunettes de vue", d:"Acétate noir, forme rectangulaire affirmée", img:"img/vue-rectangle.png", sw:["#1f1d1b","#5b3a1e","#8a1f3d"], badge:"Nouveau", o:true},
+  {n:"Pilote", cat:"vue", kind:"Lunettes de vue", d:"Double pont, esprit aviateur rétro", img:"img/vue-pilote.png", sw:["#1f1d1b","#b08d57"]},
+  {n:"Papillon", cat:"vue", kind:"Lunettes de vue", d:"Forme papillon, détails dorés", img:"img/vue-papillon.png", sw:["#1f1d1b","#7a4b2a","#c9a36b"], badge:"Tendance"},
+  {n:"Azur", cat:"vue", kind:"Lunettes de vue", d:"Métal fin bleu nuit, ultra-léger", img:"img/vue-metal-bleu.png", sw:["#1f3b63","#33312e","#9aa0a6"]},
+  {n:"Rivage", cat:"soleil", kind:"Lunettes de soleil", d:"Verres teintés catégorie 3, UV400", img:"img/soleil-noir.png", sw:["#1f1d1b","#3a4f6b"], badge:"UV400", o:true},
+  {n:"Sélection", cat:"vue", kind:"Collection", d:"Écaille, couleurs et métal : venez essayer", img:"img/collection.png", sw:["#5b3a1e","#1e6b4f","#e8dcc6"], cover:true}
+];
+const heart = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#33312e" stroke-width="2"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg>';
+$("#products").innerHTML = products.map((p, i) => `
+  <article class="card reveal" data-d="${i % 3}" data-cat="${p.cat}">
+    <div class="img">
+      ${p.badge ? `<span class="badge${p.o ? " o" : ""}">${p.badge}</span>` : ""}
+      <button class="fav" aria-label="Ajouter aux favoris">${heart}</button>
+      <img src="${p.img}" alt="${p.kind} ${p.n}" loading="lazy" ${p.cover ? 'style="width:100%;height:100%;object-fit:cover;mix-blend-mode:normal"' : ""}>
+    </div>
+    <div class="body">
+      <span class="kind">${p.kind}</span>
+      <h4>${p.n}</h4>
+      <span class="desc">${p.d}</span>
+      <div class="foot">
+        <div class="swatches">${p.sw.map(c => `<i style="background:${c}"></i>`).join("")}</div>
+        <a class="go" href="#commander" data-model="${p.n}">Commander</a>
+      </div>
+    </div>
+  </article>`).join("");
+
+// Filtres
+$$(".filters button").forEach(b => b.onclick = () => {
+  $$(".filters button").forEach(x => x.classList.toggle("on", x === b));
+  $$(".card").forEach(c => c.classList.toggle("hide", b.dataset.f !== "all" && c.dataset.cat !== b.dataset.f));
+});
+
+// Effet 3D au survol des cartes
+const fine = matchMedia("(hover:hover)").matches;
+if (fine) $$(".card").forEach(c => {
+  c.addEventListener("mousemove", e => {
+    const r = c.getBoundingClientRect(), x = (e.clientX - r.left) / r.width - .5, y = (e.clientY - r.top) / r.height - .5;
+    c.style.transform = `perspective(900px) rotateY(${x * 8}deg) rotateX(${-y * 8}deg) translateY(-6px)`;
+  });
+  c.addEventListener("mouseleave", () => c.style.transform = "");
+});
+
+// Apparition au défilement
+const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } }), {threshold:.15});
+$$(".reveal").forEach(el => io.observe(el));
+
+// En-tête, barre de progression, retour en haut, parallaxe
+const par = $("[data-parallax]");
+const onScroll = () => {
+  const y = scrollY, h = document.documentElement.scrollHeight - innerHeight;
+  $("#hdr").classList.toggle("scrolled", y > 20);
+  $("#progress").style.width = (y / h * 100) + "%";
+  $("#toTop").classList.toggle("show", y > 700);
+  if (par) { const r = par.parentElement.getBoundingClientRect(); par.style.transform = `translateY(${(r.top - innerHeight / 2) * -0.08 - 30}px)`; }
+};
+addEventListener("scroll", onScroll, {passive:true}); onScroll();
+$("#toTop").onclick = () => scrollTo({top:0, behavior:"smooth"});
+
+// Menu mobile
+$("#burger").onclick = () => $("#mnav").classList.add("open");
+$("#mclose").onclick = () => $("#mnav").classList.remove("open");
+$$("#mnav a").forEach(a => a.onclick = () => $("#mnav").classList.remove("open"));
+
+// Favoris et pré-remplissage du modèle
+const toast = msg => { const t = $("#toast"); t.textContent = msg; t.classList.add("show"); clearTimeout(t._t); t._t = setTimeout(() => t.classList.remove("show"), 2200); };
+document.addEventListener("click", e => {
+  const fav = e.target.closest(".fav");
+  if (fav) { fav.classList.toggle("on"); toast(fav.classList.contains("on") ? "♥ Ajouté à vos favoris" : "Retiré des favoris"); }
+  const m = e.target.closest("[data-model]");
+  if (m) { $("#modeleInput").value = m.dataset.model; toast("Modèle « " + m.dataset.model + " » ajouté à votre demande"); }
+});
+
+// Envoi du formulaire par mail
+$("#orderForm").addEventListener("submit", e => {
+  e.preventDefault();
+  const f = new FormData(e.target);
+  const body = `Nom : ${f.get("nom")}\nTéléphone : ${f.get("tel")}\nE-mail : ${f.get("email")}\nDemande : ${f.get("type")}\nModèle : ${f.get("modele")}\n\n${f.get("message")}`;
+  location.href = `mailto:acuitixoptic@gmail.com?subject=${encodeURIComponent(f.get("type") + " – " + f.get("nom"))}&body=${encodeURIComponent(body)}`;
+});
+$("#yr").textContent = new Date().getFullYear();
+</script>
+</body>
+</html>
